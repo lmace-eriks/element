@@ -17,7 +17,8 @@ const Element: StorefrontFunctionComponent<ElementProps> = ({ tag, attributes, c
   const [htmlAttributes, setHTMLAttributes] = useState<any>();
   const [htmlClasses, setHTMLClasses] = useState<string>();
 
-  const CustomTag: any = `${tag}`;
+  const defaultTag = "div";
+  const CustomTag: any = !tag ? `${defaultTag}` : `${tag}`;
   const classPrefix = "eriksbikeshop-element-1-x-";
 
   const buildAttributes = () => {

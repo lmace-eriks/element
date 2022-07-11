@@ -31,7 +31,7 @@ Insert any HTML Element tag into VTEX with custom attributes.
 ```
 
 ## Props
-* Tag: String - Any HTML Element Tag (`<div>`, `<article>`, `<section>`, `<figure>`, `<img>`...  ).
+* Tag: String - Any HTML Element Tag (`<div>`, `<article>`, `<section>`, `<figure>`, `<img>`...  ). Defaults to `<div>` if not defined.
 * Attributes: Array of Objects. Object should have a Key and Value that is the attribute name and value.
   * `{ "key": "lang", "value": "en" }` will render as `lang="en"` in the DOM as an attribute of the HTML Element.
   * Semicolons are not allowed in the attributes, so the `style` attribute is illegal, and semicolons should be avoided completely.
