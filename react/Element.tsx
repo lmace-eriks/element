@@ -22,10 +22,13 @@ const Element: StorefrontFunctionComponent<ElementProps> = ({ tag, attributes, c
 
   const buildAttributes = () => {
     if (!attributes) return;
+
     const tempAttributes: any = {};
+
     attributes.forEach(att => {
       tempAttributes[att.key] = att.value;
     })
+
     setHTMLAttributes(tempAttributes);
   }
 
@@ -61,7 +64,36 @@ Element.schema = {
   title: 'Element',
   description: '',
   type: 'object',
-  properties: {}
+  properties: {
+    tag: {
+      title: "HTML Element Tag",
+      description: "div, article, section... Do not include <>.",
+      type: "string"
+    },
+    attributes: {
+      title: "Attributes",
+      description: "List of attributes for HTML Element",
+      type: "array",
+      items: {
+        properties: {
+          __editorItemTitle: {
+            title: "Attribute",
+            type: "string",
+          },
+          key: {
+            title: "Key",
+            descripiton: "Attribute Name / Key",
+            type: "string"
+          },
+          value: {
+            title: "Value",
+            descripiton: "Attribute Value",
+            type: "string"
+          }
+        }
+      }
+    }
+  }
 }
 
 export default Element;
