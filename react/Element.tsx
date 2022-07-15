@@ -5,6 +5,7 @@ interface ElementProps {
   attributes: Array<AttributeObject>
   children: ReactChildren
   classes: Array<string>
+  text: string
 }
 
 interface AttributeObject {
@@ -12,7 +13,7 @@ interface AttributeObject {
   value: string
 }
 
-const Element: StorefrontFunctionComponent<ElementProps> = ({ tag, attributes, classes, children }) => {
+const Element: StorefrontFunctionComponent<ElementProps> = ({ tag, attributes, classes, text, children }) => {
   const [openGate, setOpenGate] = useState<Boolean>(true);
   const [htmlAttributes, setHTMLAttributes] = useState<any>();
   const [htmlClasses, setHTMLClasses] = useState<string>();
@@ -57,7 +58,7 @@ const Element: StorefrontFunctionComponent<ElementProps> = ({ tag, attributes, c
   });
 
   return (
-    <CustomTag {...htmlAttributes} className={htmlClasses}>{children}</CustomTag>
+    <CustomTag {...htmlAttributes} className={htmlClasses}>{text || children}</CustomTag>
   )
 }
 
@@ -68,7 +69,12 @@ Element.schema = {
   properties: {
     tag: {
       title: "HTML Element Tag",
-      description: "div, article, section... Do not include <>.",
+      description: "div, article, section, h2... Do not include <>.",
+      type: "string"
+    },
+    text: {
+      title: "Inner Text",
+      description: "Only used if there are no children / decendants.",
       type: "string"
     },
     attributes: {
@@ -80,6 +86,7 @@ Element.schema = {
           __editorItemTitle: {
             title: "Attribute",
             type: "string",
+            default: "Attribute"
           },
           key: {
             title: "Key",
