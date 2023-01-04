@@ -8,6 +8,8 @@ interface ElementProps {
   blockClass: string
   classes: Array<string>
   text: string
+  linkURL: string
+  newTab: boolean
 }
 
 interface AttributeObject {
@@ -15,7 +17,7 @@ interface AttributeObject {
   value: string
 }
 
-const Element: StorefrontFunctionComponent<ElementProps> = ({ blockStyle, tag, attributes, blockClass, classes, text, children }) => {
+const Element: StorefrontFunctionComponent<ElementProps> = ({ blockStyle, linkURL, newTab, tag, attributes, blockClass, classes, text, children }) => {
   const openGate = useRef(true);
   const [loading, setLoading] = useState(true);
   const [htmlAttributes, setHTMLAttributes] = useState<any>();
@@ -89,7 +91,20 @@ const Element: StorefrontFunctionComponent<ElementProps> = ({ blockStyle, tag, a
     setLoading(false);
   });
 
-  return !loading ? <CustomTag {...htmlAttributes} className={blockClass ? `${classPrefix}${blockClass}` : htmlClasses} style={styleRules} >{text || children}</CustomTag> : <></>;
+  const CustomElement = () => (
+    <CustomTag {...htmlAttributes} className={blockClass ? `${classPrefix}${blockClass}` : htmlClasses} style={styleRules} >
+      {text || children}
+    </CustomTag>
+  )
+
+  const WrapWithLink = () => (
+    <a href={linkURL} className={blockClass ? `${classPrefix}link-wrapper-${blockClass}` : htmlClasses} target={newTab ? "_blank" : ""} rel="noreferrer" >
+      <CustomElement />
+    </a>
+  )
+
+  // If linkURL, wrap with an <a> element - LM
+  return !loading ? linkURL ? <WrapWithLink /> : <CustomElement /> : <></>;
 }
 
 Element.schema = {
@@ -135,6 +150,16 @@ Element.schema = {
           }
         }
       }
+    },
+    linkURL: {
+      title: "Wrap with Link - URL",
+      description: "Wraps entire <tag> with an anchor element. Mostly for <img>.",
+      type: "string"
+    },
+    newTab: {
+      title: "Open in new tab?",
+      type: "boolean",
+      default: false
     }
   }
 }
